@@ -8,3 +8,42 @@ If UiPath Studio is installed on your computer, select the option to open it whe
 If Studio is not installed on your computer, click the link in the Open in Studio Desktop dialog box to access the Resource Center in Automation Cloud and download it.
 
 You can also open a project in Studio Desktop from within a project when adding an activity that is only available in Studio Desktop. Once opened in Studio Desktop, the project is closed in Studio Web and you are redirected to the Workspace page.
+
+The goal of this process is to create a workflow that will input data from a spreadsheet into the form fields on the screen.
+
+Step 1 — Download and read the spreadsheet
+1. Use Application/Browser
+   - Action: Open the RPAChallenge link  
+   - Properties: Close = Never, Open = Always, Resize = Maximize, InputMethod = Simulate
+2. Click
+   - Action: Click the Excel file download button (employee info)
+3. Wait for download
+   - Action: wait for the Excel file to appear in the “Downloads” folder
+4. Read Range
+   - Action: read the Excel spreadsheet
+   - Output: dt_EmployeeInf (DataTable)
+
+Step 2 — Fill out the form for each employee
+1. Use Application/Browser
+   - Action: attach the already open browser  
+   - Properties: Close = Always, Open = Never, Resize = None
+2. Click
+   - Action: click the “Start” button
+3. For Each Row in Data Table (dt_EmployeeInf)
+   - Index variable: intIndex (stores the index of the current row)
+   - Loop body:
+     a. Try / Catch / Finally (encompassing the form-filling actions)
+        - Try:
+          - Type Into (multiple) — fill the form fields with the values from the current row
+          - Log Message (Info) — log progress with the row index (intIndex)
+        - Catch:
+          - Log Message (Error) — log the row that generated the exception
+        - Finally:
+          - Click — click the “Submit” button to submit the record
+
+Suggested variables and names
+- dt_EmployeeInf — DataTable containing data read from Excel  
+- intIndex — Integer (iteration index/counter)  
+
+Practical notes (brief recommendations)
+- Verify that the downloaded file has the correct name/format
